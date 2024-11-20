@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>セキュリティ設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>セキュリティ設定</h2>
+
+            <div class="step-card">
+                <h3>1. ファイアウォールの設定</h3>
+                <p>UFWを使用してファイアウォールを設定します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># UFWの有効化
+sudo ufw enable
+
+# Apacheの許可
+sudo ufw allow 'Apache'
+
+# HTTPSの許可
+sudo ufw allow 'Apache Secure'</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>2. Basic認証の設定</h3>
+                <p>特定のディレクトリに認証を設定します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># apache2-utilsのインストール
+sudo apt install apache2-utils
+
+# パスワードファイルの作成
+sudo htpasswd -c /etc/apache2/.htpasswd username</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>Apache設定ファイルに認証設定を追加:</p>
+                <div class="code-block">
+                    <pre><code class="language-apache">&lt;Directory "/var/www/protected"&gt;
+    AuthType Basic
+    AuthName "Restricted Content"
+    AuthUserFile /etc/apache2/.htpasswd
+    Require valid-user
+&lt;/Directory&gt;</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>3. SSHセキュリティ</h3>
+                <p>SSHアクセスのセキュリティを強化します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># SSHポートの許可
+sudo ufw allow ssh
+
+# SSH設定ファイルの編集
+sudo vi /etc/ssh/sshd_config</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

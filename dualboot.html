@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デュアルブート設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>デュアルブート設定</h2>
+
+            <div class="step-card">
+                <h3>1. USBメモリへのUbuntuインストーラの作成</h3>
+                <p>Rufusを使用してブータブルUSBを作成します。</p>
+                <ol>
+                    <li>Rufusを起動する</li>
+                    <li>USBメモリを接続する</li>
+                    <li>「デバイス」でUSBメモリを選択</li>
+                    <li>「ブートの種類」でUbuntuのISOファイルを選択</li>
+                    <li>「スタート」をクリックしてUSBの作成を開始</li>
+                </ol>
+                <div class="image-placeholder">
+                    <img src="/api/placeholder/800/400" alt="Rufusの設定画面" />
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>2. BIOS設定の変更</h3>
+                <p>PCの起動順序を変更してUSBからブートできるようにします。</p>
+                <ol>
+                    <li>PCを再起動し、起動時にF2キーを連打してBIOS画面を開く</li>
+                    <li>「Boot」メニューを選択</li>
+                    <li>起動順序でUSB HDDを最優先に設定</li>
+                    <li>設定を保存して再起動</li>
+                </ol>
+                <div class="image-placeholder">
+                    <img src="/api/placeholder/800/400" alt="BIOS設定画面" />
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>3. Ubuntuのインストール</h3>
+                <p>Windowsと共存するようにUbuntuをインストールします。</p>
+                <ol>
+                    <li>「Ubuntuをインストール」を選択</li>
+                    <li>キーボードレイアウトは日本語を選択</li>
+                    <li>インストールの種類で「Ubuntu を Windows Boot Manager とは別にインストール」を選択</li>
+                    <li>パーティションサイズを調整</li>
+                    <li>地域とユーザー情報を設定</li>
+                    <li>インストール完了後、USBを抜いて再起動</li>
+                </ol>
+                <div class="image-placeholder">
+                    <img src="/api/placeholder/800/400" alt="Ubuntuインストール画面" />
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>4. セキュアブートの設定</h3>
+                <p>必要に応じてセキュアブートの設定を行います。</p>
+                <ol>
+                    <li>再起動時にBIOSを開く</li>
+                    <li>「Set Supervisor Password」でパスワードを設定</li>
+                    <li>セキュアブートのオプションを設定</li>
+                    <li>設定を保存して再起動</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

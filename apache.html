@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>Apache Webサーバーの設定</h2>
+
+            <div class="step-card">
+                <h3>1. Apacheのインストール</h3>
+                <p>パッケージマネージャーを使用してApacheをインストールします。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># パッケージの更新
+sudo apt update
+
+# Apacheのインストール
+sudo apt -y install apache2</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>2. Apacheの起動確認</h3>
+                <p>インストール後、サービスの状態を確認します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># Apacheの状態確認
+sudo systemctl status apache2</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <div class="image-placeholder">
+                    <img src="/api/placeholder/800/400" alt="Apache状態確認画面" />
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>3. 仮想ホストの設定</h3>
+                <p>新しいWebサイト用の設定を作成します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 設定ファイルの作成
+sudo touch /etc/apache2/sites-available/your-site.conf
+
+# ディレクトリの作成
+sudo mkdir -p /var/www/your-site
+
+# HTMLファイルの作成
+sudo touch /var/www/your-site/index.html</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>4. 仮想ホスト設定ファイルの編集</h3>
+                <p>Apache設定ファイルを編集します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 設定ファイルの編集
+sudo vi /etc/apache2/sites-available/your-site.conf</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <div class="code-block">
+                    <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/your-site
+    DirectoryIndex index.html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>5. 設定の有効化</h3>
+                <p>作成した仮想ホストを有効化します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># サイトの有効化
+sudo a2ensite your-site.conf
+
+# Apache設定の再読み込み
+sudo systemctl reload apache2</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
