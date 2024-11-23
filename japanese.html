@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デュアルブート設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
+                <li><a href="vim.html">Vimの操作</a></li>
+                <li><a href="japanese.html">日本語入力</a></li>
+                <li><a href="reference.html">参考資料</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>日本語入力について</h2>
+
+            <div class="step-card">
+                <h3>日本語入力を可能にする</h3>
+                <p>ubuntuを起動した際に、日本語入力ができない可能性があります。<br>
+                    日本語入力を可能にするため、「fcitx-mozc」というパッケージをインストールする必要があります。
+                    インストールの前処理として、ubuntu内に保存されているパッケージリストを更新します。
+                    パッケージリストを最新の状態にしておかないと、正しくインストールされないことがあります。次のコマンドを実行してください。
+                </p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># パッケージの更新
+sudo apt update</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>パッケージリストの更新が完了したら、次のコマンドで「fcitx-mozc」をインストールする。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># fcitx-mozcのインストール
+sudo apt install -y fcitx-mozc</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p> -yを記述することで、インストール時の確認プロンプトに自動的に「Yes」と回答し、
+                    インストールの過程で表示される質問に対して、 すべて自動的に承認します。</p>
+                <p>Mozcを有効するには、いったんログアウトして再度ログインする必要があります。
+                    再起動が完了したら日本語の入力ができるかどうか確認します。</p>
+            </div>
+            <div class="step-card">
+                <h3>入力、変換操作のカスタマイズ</h3>
+                <p>入力や変換の操作のカスタマイズは、「Mozc プロパティ」ダイアログから行うことができます。</p>
+                <div class="image-placeholder">
+                    <img src="../images/画像7.png" alt="Rufusの設定画面" />
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
