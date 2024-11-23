@@ -19,6 +19,8 @@
                 <li><a href="dualboot.html">デュアルブート</a></li>
                 <li><a href="apache.html">Apache設定</a></li>
                 <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
             </ul>
         </div>
     </nav>
@@ -29,7 +31,9 @@
 
             <div class="step-card">
                 <h3>1. Apacheのインストール</h3>
-                <p>パッケージマネージャーを使用してApacheをインストールします。</p>
+                <p>Web閲覧にはEdge、Chrome、Safari、FirefoxなどのWebブラウザが必要で、ブラウザはHTTPプロトコルを使用してWebサーバと通信します。
+                    サーバソフトウェアとしては、Linux環境で高いシェアを持つApache HTTP Serverがあり、今回はこれを使用します。</br>
+                    パッケージマネージャーを使用してApacheをインストールします。</p>
                 <div class="code-block">
                     <pre><code class="language-bash"># パッケージの更新
 sudo apt update
@@ -38,6 +42,12 @@ sudo apt update
 sudo apt -y install apache2</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
+                <p>sudoは一時的に管理者権限でコマンドを実行するために必要です。</br>
+                    sudo apt updateでは、システムにインストール可能なソフトウェアパッケージのリストを最新化し、
+                    パッケージのバージョン情報を更新します。そして、sudo apt -y install apache2でApacheのインストールを行います。
+                    -yを記述することで、インストール時の確認プロンプトに自動的に「Yes」と回答し、インストールの過程で表示される質問に対して、
+                    すべて自動的に承認します。
+                    </p>
             </div>
 
             <div class="step-card">
@@ -51,17 +61,27 @@ sudo systemctl status apache2</code></pre>
                 <div class="image-placeholder">
                     <img src="/api/placeholder/800/400" alt="Apache状態確認画面" />
                 </div>
+                <p>起動できていれば、図のようにactive(running)と表示されます。</p>
+                <p>次に、ブラウザから、「http://<サーバのIPアドレス>」にアクセスし、図のようなApacheのウェルカムページが
+                    表示されれば完了です。
+                    また、サーバ上で Web サーバにアクセスする場合、「http://localhost」でも表示できます。
+                </p>
+                <div class="image-placeholder">
+                    <img src="/api/placeholder/800/400" alt="Apache2デフォルトページ" />
+                </div>
             </div>
 
             <div class="step-card">
                 <h3>3. 仮想ホストの設定</h3>
-                <p>新しいWebサイト用の設定を作成します。</p>
+                <p>Apacheをインストールした直後は、
+                    「/etc/apache2/sites-available/000-default.conf」がデフォルトの仮想ホストとして設定されています。
+                    新しいWebサイト用の設定を作成します。</p>
                 <div class="code-block">
                     <pre><code class="language-bash"># 設定ファイルの作成
 sudo touch /etc/apache2/sites-available/your-site.conf
 
-# ディレクトリの作成
-sudo mkdir -p /var/www/your-site
+# htmlファイルを格納するディレクトリの作成(ここではvarのwwwにディレクトリを作成)
+sudo mkdir -p /var/www/your-site #-pオプションをつけることで親ディレクトリ、パスの途中のディレクトリを自動で作成
 
 # HTMLファイルの作成
 sudo touch /var/www/your-site/index.html</code></pre>
@@ -78,7 +98,9 @@ sudo vi /etc/apache2/sites-available/your-site.conf</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
                 <div class="code-block">
-                    <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+                    <pre><code class="language-apache">
+#設定ファイルに追加
+&lt;VirtualHost *:80&gt;
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/your-site
     DirectoryIndex index.html
@@ -87,6 +109,9 @@ sudo vi /etc/apache2/sites-available/your-site.conf</code></pre>
 &lt;/VirtualHost&gt;</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
+                <p>⚫ DocumentRoot:Web ページを配置するディレクトリ(/var/www/ディレクトリ名)</br>
+                    ⚫ DirectoryIndex:サーバ名でアクセスしたときに表示するファイル(ファイル名.html)
+                    </p>
             </div>
 
             <div class="step-card">
@@ -100,6 +125,22 @@ sudo a2ensite your-site.conf
 sudo systemctl reload apache2</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
+                <p>a2ensite は "Apache2 enable site" の略です。</p>
+                <p><strong>ここでエラーが発生する場合</strong><br>
+                    先に作成された設定ファイルが参照されるため、000-default.confを無効化しておく必要がある。
+                </p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># サイトの有効化
+sudo a2dissite 000-default.conf # 仮想ホストの無効化</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <div class="code-block">
+                    <pre><code class="language-bash">sudo systemctl reload apache2 # 再び設定を反映</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>a2dissite は "Apache2 disable site" の略です。
+                </p>
+
             </div>
         </div>
     </main>

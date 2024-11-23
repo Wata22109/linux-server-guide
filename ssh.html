@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>SSH設定</h2>
+
+            <div class="step-card">
+                <h3>1. SSHとは</h3>
+                <p>SSHとは、別のコンピューターに遠隔でログインしたり、特定のサーバに入ったりするために使用されます。</p>
+            </div>
+
+            <div class="step-card">
+                <h3>2. SSHのインストール</h3>
+                <p>UbuntuでSSHを使用する際には、OpenSSHをインストールする必要があります。OpenSSHとはSSHプロトコルを利用するためのソフトウェアです。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">sudo apt install openssh-server
+
+# サービスの起動、有効化、確認
+sudo systemctl start ssh
+sudo systemctl enable ssh
+sudo systemctl status ssh</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>3. ポート番号の設定</h3>
+                <p>SSH の設定は、/etc/ssh/sshd_config に記述されているため、この設定ファイルを変更し反映させます。
+                    設定の変更によって不具合が生じる可能性もあるため、以下のコマンドで変更を加える前に、まず設定ファイルのバックアップを作成しましょう。</p>
+                <p>デフォルトでは SSH は 22 番ポートを通じて通信を行いますが、
+                    セキュリティの観点から、デフォルトの22番ポート以外を使用することが推奨されます。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 設定ファイルのバックアップ
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
+
+# ファイアウォールの設定
+sudo ufw allow 7022(任意のポート番号)/tcp</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>0-1023番までは「ウェルノウンポート」と呼ばれ、一般的なサービスで予約されています。
+                    そのため、1024番以上のポート番号を使用するようにしましょう。</p>
+                <p>設定ファイル(/etc/ssh/sshd_config)から 「#Port 22」と記述されている行を以下のように変更します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">#vimの起動
+sudo vi /etc/ssh/sshd_config
+# Port 22 を以下のように変更
+Port 7022(任意のポート番号)</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>SSH で利用するポート番号を変更したら、次にファイアウォールに SSH のポート利用許可のルールを追加する。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">sudo ufw allow 7022(任意のポート番号)/tcp</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>4. SSHログイン</h3>
+                <p>SSH の基本設定が完了した後、SSH 接続可能かどうかテストする。Windows の場合は、
+                    PowerShellを起動する。Mac や Linux の場合は、ターミナルまたは端末を起動する。そして、以下のコマンドを実行する。
+                    </p>
+                <div class="code-block">
+                    <pre><code class="language-bash">ssh ユーザ名@ホスト名 -p ポート番号</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>※Windowsのコマンドプロンプトの場合、sshコマンドのインストールが必要となるため、特にこだわりがない場合はPowerShellを使用する。<br>
+                    ユーザに応じたパスワードを入力したら、ログインが実行される。</p>
+            </div>
+
+            <div class="step-card">
+                <h3>5. 2段階認証の設定</h3>
+                <p>より安全な認証のために、パスワード認証と公開鍵認証を組み合わせた2段階認証を設定できます。<br>
+                    SSH を利用するクライアント PC で鍵生成を行う。Windows の場合は、PowerShell から、
+                    Mac や Linux の場合は、ターミナルもしくは端末から鍵生成を行う。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 鍵の生成例(ssh-keygen -t 暗号化アルゴリズム -f ファイル名)
+ssh-keygen -t ed25519 -f ./.ssh/id_ed25519
+
+# 公開鍵の登録
+cat $HOME/.ssh/id_ed25519.pub | ssh ユーザ名@ホスト名 -p ポート番号 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>ここで指定している「ed25519」は従来の鍵生成の方式よりも高速かつ安全であるため、現在主流の暗号化アルゴリズムとなっています。</p>
+                <p>ファイル名は、生成した鍵を保存するためのファイルになります。基本的には、生成した鍵は「.ssh」という隠しディレクトリ(フォルダ)の直下に配置することが多いため、
+                    「$HOME/.ssh/ファイル名 ($HOME\.ssh\ファイル名)」とすることが多いです。
+                    パスフレーズの設定を行い、正常に実行されると、「ファイル名(秘密鍵)」と「ファイル名.pub(公開鍵)」の 2 つのファイルが生成されます。
+                    </p>
+                <p>公開鍵登録は、cat コマンドと ssh コマンドをパイプで組み合わせることで、
+                    生成した鍵をクリップし、直接サーバにファイルとして書き出すという方法で行っています。
+                    </p>
+                <p>公開鍵の登録を行った後、2 段階認証を有効化するために設定ファイルの編集を行います。
+                    設定ファイルに以下を追加します。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">AuthenticationMethods publickey,password</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>パラメータを記述した後は、ssh サービスを再起動し、設定を反映させる。
+                    以上の設定を行い、SSH接続時にパスワードが要求されれば、2段階認証が正常に機能している。
+                    </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

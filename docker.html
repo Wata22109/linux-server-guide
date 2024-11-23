@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker設定 - Linux サーバー構築ガイド</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Linux サーバー構築ガイド</h1>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="preparation.html">準備</a></li>
+                <li><a href="dualboot.html">デュアルブート</a></li>
+                <li><a href="apache.html">Apache設定</a></li>
+                <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>Docker設定</h2>
+
+            <div class="step-card">
+                <h3>1. Dockerのインストール</h3>
+                <p>以下の手順でDockerをインストールします：</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>2. インストールの確認</h3>
+                <p>Dockerが正しくインストールされたか確認します：</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># バージョン確認
+sudo docker --version
+
+# 起動状態の確認
+sudo systemctl status docker</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3>3. ユーザー設定</h3>
+                <p>dockerコマンドをsudoなしで実行できるようにユーザーを設定します：</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Linux サーバー構築ガイド</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

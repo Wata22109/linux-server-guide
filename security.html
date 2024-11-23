@@ -19,6 +19,8 @@
                 <li><a href="dualboot.html">デュアルブート</a></li>
                 <li><a href="apache.html">Apache設定</a></li>
                 <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
             </ul>
         </div>
     </nav>
@@ -34,29 +36,40 @@
                     <pre><code class="language-bash"># UFWの有効化
 sudo ufw enable
 
-# Apacheの許可
+# Apache(80番ポート)の許可
 sudo ufw allow 'Apache'
 
-# HTTPSの許可
+# HTTPS(443番ポート)の許可
 sudo ufw allow 'Apache Secure'</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
+                <p>ufw：Uncomplicated Firewall（簡単なファイアウォール）の略<br>
+                    enable：ファイアウォールを起動して有効にする
+                </p>
+                <p>80番ポートと443番ポートの両方を設定することで
+                    ユーザが古いブックマークやリンクから「http://」でアクセスしてきた場合でも、80番ポートで受け付けて、安全な「https://」（443番ポート）に自動的に転送でき、全てのブラウザやデバイスでの互換性を確保できます。
+                </p>
             </div>
 
             <div class="step-card">
                 <h3>2. Basic認証の設定</h3>
-                <p>特定のディレクトリに認証を設定します。</p>
+                <p>特定のディレクトリに認証を設定します。<br>
+                特定のユーザのみが閲覧できるWebページを作成するためには、ユーザ名とパスワードによる認証を用います。
+                あらかじめユーザ名とパスワードをApacheに登録し、
+                特定のディレクトリ内にアクセスする場合に認証を求める、基本認証(BASIC 認証)の設定を行います。</p>
                 <div class="code-block">
-                    <pre><code class="language-bash"># apache2-utilsのインストール
+                    <pre><code class="language-bash"># apache2-utilsのインストール(htpasswdコマンドが使用可能になる。)
 sudo apt install apache2-utils
 
-# パスワードファイルの作成
+# パスワードファイルの作成(初回のみ -c オプションをつける)
 sudo htpasswd -c /etc/apache2/.htpasswd username</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
-                <p>Apache設定ファイルに認証設定を追加:</p>
+                <p>これだけでは、ユーザ情報をApacheに登録しただけであるため、
+                    仮想ホストの設定ファイルに認証のためのディレクティブを追加する。</p>
                 <div class="code-block">
-                    <pre><code class="language-apache">&lt;Directory "/var/www/protected"&gt;
+                    <pre><code class="language-apache">#&lt;VirtualHost *:80&gt;の内部に記述
+&lt;Directory "/var/www/protected"&gt;
     AuthType Basic
     AuthName "Restricted Content"
     AuthUserFile /etc/apache2/.htpasswd
@@ -64,19 +77,18 @@ sudo htpasswd -c /etc/apache2/.htpasswd username</code></pre>
 &lt;/Directory&gt;</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
-            </div>
-
-            <div class="step-card">
-                <h3>3. SSHセキュリティ</h3>
-                <p>SSHアクセスのセキュリティを強化します。</p>
+                <p>AuthType Basic: Basic認証を使用<br>
+                    AuthName: 認証時に表示されるメッセージ<br>
+                    AuthUserFile: パスワードファイルの場所<br>
+                    Require valid-user: 有効なユーザのみアクセスを許可</p>
+                <p>変更後は設定を再度読み込みする。</p>
                 <div class="code-block">
-                    <pre><code class="language-bash"># SSHポートの許可
-sudo ufw allow ssh
-
-# SSH設定ファイルの編集
-sudo vi /etc/ssh/sshd_config</code></pre>
-                    <button class="copy-button">コピー</button>
-                </div>
+                    <pre><code class="language-bash">sudo systemctl reload apache2</code></pre>
+                <button class="copy-button">コピー</button>
+            </div>
+            <p>「http://localhost」にアクセスして図のような画面になれば設定は成功である。</p>
+            <div class="image-placeholder">
+                <img src="/api/placeholder/800/400" alt="Basic認証" />
             </div>
         </div>
     </main>

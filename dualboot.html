@@ -19,6 +19,8 @@
                 <li><a href="dualboot.html">デュアルブート</a></li>
                 <li><a href="apache.html">Apache設定</a></li>
                 <li><a href="security.html">セキュリティ</a></li>
+                <li><a href="ssh.html">SSH</a></li>
+                <li><a href="docker.html">Docker</a></li>
             </ul>
         </div>
     </nav>
@@ -40,6 +42,8 @@
                 <div class="image-placeholder">
                     <img src="/api/placeholder/800/400" alt="Rufusの設定画面" />
                 </div>
+                <p>Rufusは、USBドライブを使ってブート可能なメディア（起動ディスク）
+                    を作成するための無料のWindows用ソフトウェアです。</p>
             </div>
 
             <div class="step-card">
@@ -54,6 +58,7 @@
                 <div class="image-placeholder">
                     <img src="/api/placeholder/800/400" alt="BIOS設定画面" />
                 </div>
+                <p>再び起動するとubuntuのインストーラのブート画面になるため、インストーラをここで起動します。</p>
             </div>
 
             <div class="step-card">
@@ -70,17 +75,24 @@
                 <div class="image-placeholder">
                     <img src="/api/placeholder/800/400" alt="Ubuntuインストール画面" />
                 </div>
+                <p>6.の際にUSBを抜かなかったら、再びインストーラが起動してしまうため注意する。</p>
+                <p>3.の際に、「ディスクを削除してubuntuをインストール」を選択するとWindowsの領域をすべて削除して
+                    ubuntuのみをインストールすることになる。
+                    また、「それ以外」は3つ以上のOSを併用する場合に選択する。</p>
             </div>
 
             <div class="step-card">
                 <h3>4. セキュアブートの設定</h3>
-                <p>必要に応じてセキュアブートの設定を行います。</p>
+                <p>セキュアブートの設定を行います。</p>
                 <ol>
-                    <li>再起動時にBIOSを開く</li>
+                    <li>再起動時に再びBIOSを開く</li>
                     <li>「Set Supervisor Password」でパスワードを設定</li>
                     <li>セキュアブートのオプションを設定</li>
-                    <li>設定を保存して再起動</li>
+                    <li>設定を保存して再起動すると、ubuntuが起動する</li>
                 </ol>
+                <p>3.では2.でパスワードを設定した際に選択可能になった、「Select an UEFI file as trusted for executind」
+                    から、HDD0->EFI->ubuntu->shimx64.efiと選択する。
+                </p>
             </div>
         </div>
     </main>
