@@ -72,6 +72,160 @@ newgrp docker</code></pre>
                     <button class="copy-button">コピー</button>
                 </div>
             </div>
+
+            <div class="step-card">
+                <h3>4. Docker の基礎知識</h3>
+                <p>Dockerには操作可能な対象は大きく分けて 「Container (コンテナ)」、「Image (イメージ)」、
+                    「Volume (ボリューム)」、「Network (ネットワーク)」の 4 つが存在します。ここでは
+                    「Container」に焦点を当てて紹介します。</p>
+                <p>コンテナの基本概念</p>
+                <ol>
+                    <li>コンテナは、アプリケーションとその実行に必要な環境をパッケージ化した軽量な実行単位</li>
+                    <li>イメージから作成され、独立した環境として動作する</li>
+                    <li>ホストOSのカーネルを共有しながら、他のコンテナやホストシステムから分離された状態で実行される</li>
+                </ol>
+                <p>コンテナの特徴</p>
+                <ol>
+                    <li>分離性：各コンテナは独自のファイルシステム、プロセス空間、ネットワーク空間を持つ</li>
+                    <li>可搬性：どの環境でも同じように動作することが保証される</li>
+                    <li>使い捨て可能：必要に応じて簡単に作成・削除できる</li>
+                </ol>
+            </div>
+
+            <div class="step-card">
+                <h3>基本的なコマンド操作</h3>
+                <p>コンテナの作成と起動</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># コンテナの作成と起動（基本形）
+docker run [オプション] イメージ名[:タグ]
+                        
+# 主要なrunオプション
+-d          # バックグラウンドで実行
+-it         # 対話型ターミナルで起動
+--name      # コンテナ名を指定
+-p          # ポートフォワーディング（例：-p 8080:80）
+-v          # ボリュームのマウント
+-e          # 環境変数の設定
+--network   # ネットワークの指定
+--restart   # 再起動ポリシーの設定</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>コンテナの確認</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 実行中のコンテナ一覧
+docker ps
+                        
+# 全てのコンテナ一覧（停止中含む）
+docker ps -a
+                        
+# コンテナの詳細情報表示
+docker inspect コンテナID/名前
+                       
+# コンテナのログ確認
+docker logs コンテナID/名前
+docker logs -f コンテナID/名前  # リアルタイムでログを表示
+                        
+# コンテナのリソース使用状況
+docker stats [コンテナID/名前]</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>コンテナの停止・再起動</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># コンテナの停止
+docker stop コンテナID/名前
+                        
+# コンテナの起動（停止済みのコンテナを起動）
+docker start コンテナID/名前
+                        
+# コンテナの再起動
+docker restart コンテナID/名前
+                        
+# コンテナの一時停止
+docker pause コンテナID/名前
+                        
+# 一時停止からの再開
+docker unpause コンテナID/名前</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>コンテナの操作・実行</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># 実行中のコンテナに接続
+docker exec -it コンテナID/名前 /bin/bash
+                        
+# コンテナ内でコマンドを実行
+docker exec コンテナID/名前 コマンド
+                        
+# コンテナのファイルをホストにコピー
+docker cp コンテナID/名前:コンテナ内のパス ホストのパス
+                        
+# ホストのファイルをコンテナにコピー
+docker cp ホストのパス コンテナID/名前:コンテナ内のパス</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>コンテナの削除</p>
+                <div class="code-block">
+                    <pre><code class="language-bash"># コンテナの削除（停止済みのみ）
+docker rm コンテナID/名前
+                        
+# 実行中のコンテナを強制削除
+docker rm -f コンテナID/名前
+                        
+# 停止中の全コンテナを削除
+docker container prune
+                        
+# コンテナ、ネットワーク、未使用イメージを一括削除
+docker system prune</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+            </div>
+            <div class="step-card">
+                <h3>コンテナ起動の確認</h3>
+                <p>コンテナ起動の確認のために、HelloWorld コンテナを利用して確認する。</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">$ docker container run hello-world</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <div class="image-placeholder">
+                    <img src="../images/画像8.png" alt="hello world" />
+                </div>
+                <p>実行すると、上記の実行結果が出力される。この出力には、チュートリアルやドキュメント
+                    URL などが記載されている。</p>
+            </div>
+            <div class="step-card">
+                <h3>Apache WebサーバのDockerでの設定方法</h3>
+                <p>Apache WebサーバはDockerHub上で「httpd」という公式イメージとして提供されている。このイメージを使うことで、簡単にWebサーバを構築できる</p>
+                <p>準備作業</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">mkdir -p ~/ディレクトリ名(任意)/htdocs ~/ディレクトリ名(任意)/conf</code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <ol>
+                    <li>htdocs: Webコンテンツ（HTMLファイルなど）を格納</li>
+                    <li>conf: Apache設定ファイルを格納</li>
+                </ol>
+                <p>コンテナの起動</p>
+                <div class="code-block">
+                    <pre><code class="language-bash">cd ~/ディレクトリ名
+docker run -dit --name my-apache-app -p 8080:80 -v ./htdocs:/usr/local/apache2/htdocs/ -v ./conf:/usr/apache2/conf httpd:2.4
+                        </code></pre>
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>重要なオプションの説明</p>
+                <ol>
+                    <li>-p 8080:80: ホストの8080番ポートをコンテナの80番ポートに接続</li>
+                    <li>-v ./htdocs:/usr/local/apache2/htdocs/: Webコンテンツのディレクトリをマウント</li>
+                    <li>-v ./conf:/usr/apache2/conf: 設定ファイルのディレクトリをマウント</li>
+                </ol>
+                <p>使用方法</p>
+                <ol>
+                    <li>htdocsディレクトリにindex.htmlなどのファイルを配置すると、Webブラウザからアクセスできます</li>
+                    <li>ホスト側のファイルを編集するだけで、コンテナ内のWebサーバーに反映されます</li>
+                </ol>
+                <p>例えば、「Hello World!!!!」記述されたindex.htmlをhtdocsに配置すれば、ブラウザで画像のような内容が表示される。</p>
+                <div class="image-placeholder">
+                    <img src="../images/画像9.png" alt="Rufusの設定画面" />
+                </div>
+            </div>
         </div>
     </main>
 
