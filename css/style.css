@@ -9,10 +9,11 @@
     --heading-color: #34495e;
     --link-color: #2980b9;
     --border-radius: 8px;
-    --max-width: 1600px;        /* 全体の最大幅を1200pxから1600pxに増加 */
+    --max-width: 1600px;
     --content-width: 1400px;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --base-font-size: 20px;  /* 基本フォントサイズを増加 */
+    --base-font-size: 20px;
+    --nav-height: 60px;
 }
 
 * {
@@ -23,32 +24,44 @@
     -moz-box-sizing: border-box;
 }
 
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.8;
     background-color: var(--background-color);
     color: var(--text-color);
-    font-size: var(--base-font-size);  /* 基本フォントサイズを適用 */
+    font-size: var(--base-font-size);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* ナビゲーションバー - サイズはそのまま */
+/* ハンバーガーメニュー */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* ナビゲーションバー */
 nav {
-    background: -webkit-linear-gradient(to right, var(--primary-color), #34495e);
-    background: -moz-linear-gradient(to right, var(--primary-color), #34495e);
-    background: -ms-linear-gradient(to right, var(--primary-color), #34495e);
-    background: -o-linear-gradient(to right, var(--primary-color), #34495e);
     background: linear-gradient(to right, var(--primary-color), #34495e);
     color: white;
     padding: 1rem 0;
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1000;
-    -webkit-box-shadow: var(--shadow);
-    -moz-box-shadow: var(--shadow);
     box-shadow: var(--shadow);
 }
 
@@ -57,15 +70,8 @@ nav {
     margin: 0 auto;
     padding: 0 2rem;
     width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -75,26 +81,19 @@ nav h1 {
     text-align: center;
     font-weight: 700;
     letter-spacing: 1px;
-    background: -webkit-linear-gradient(120deg, #fff, #f1f1f1);
     background: linear-gradient(120deg, #fff, #f1f1f1);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -ms-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
 }
 
 nav ul {
     list-style: none;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     gap: 2rem;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
     justify-content: center;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 nav a {
@@ -103,13 +102,11 @@ nav a {
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: var(--border-radius);
-    -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
 nav a:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
 }
 
@@ -123,9 +120,8 @@ main {
 
 .content {
     background-color: var(--card-background);
-    padding: 3rem 4rem;        /* 左右のパディングを増加 */
+    padding: 3rem 4rem;
     border-radius: var(--border-radius);
-    -webkit-box-shadow: var(--shadow);
     box-shadow: var(--shadow);
     margin: 0 auto;
     max-width: var(--content-width);
@@ -147,11 +143,9 @@ h2::after {
     position: absolute;
     bottom: 0;
     left: 50%;
-    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     width: 100px;
     height: 4px;
-    background: -webkit-linear-gradient(to right, var(--primary-color), var(--secondary-color));
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     border-radius: 2px;
 }
@@ -165,20 +159,23 @@ h3 {
 }
 
 /* カード */
-.step-card {
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
     background-color: var(--card-background);
-    padding: 2.5rem;          /* パディングを少し増加 */
+    padding: 2.5rem;
     border-radius: var(--border-radius);
-    -webkit-box-shadow: var(--shadow);
     box-shadow: var(--shadow);
-    margin: 2rem 0;
-    width: 100%;
-    -webkit-transition: -webkit-transform 0.3s ease;
     transition: transform 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.step-card:hover {
-    -webkit-transform: translateY(-5px);
+
+.feature-card:hover {
     transform: translateY(-5px);
 }
 
@@ -200,10 +197,9 @@ pre {
 
 code {
     font-family: 'Fira Code', monospace;
-    font-size: calc(var(--base-font-size) - 2px);  /* コードのサイズを調整 */
+    font-size: calc(var(--base-font-size) - 2px);
     line-height: 1.6;
 }
-
 
 .copy-button {
     position: absolute;
@@ -215,12 +211,8 @@ code {
     color: white;
     border-radius: var(--border-radius);
     cursor: pointer;
-    -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     font-size: 0.9rem;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
 }
 
@@ -241,13 +233,13 @@ ul, ol {
 li {
     margin: 0.8rem 0;
     line-height: 1.8;
-    font-size: var(--base-font-size);  /* リストアイテムのサイズを増加 */
+    font-size: var(--base-font-size);
 }
+
 /* リンク */
 a {
     color: var(--link-color);
     text-decoration: none;
-    -webkit-transition: color 0.3s ease;
     transition: color 0.3s ease;
 }
 
@@ -260,24 +252,19 @@ a:hover {
 .button {
     display: inline-block;
     padding: 1rem 2rem;
-    background: -webkit-linear-gradient(to right, var(--secondary-color), #2980b9);
     background: linear-gradient(to right, var(--secondary-color), #2980b9);
     color: white;
     text-decoration: none;
     border-radius: var(--border-radius);
     margin: 1rem 0;
-    -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     font-weight: 500;
     text-align: center;
-    font-size: var(--base-font-size);  /* ボタンのテキストサイズを増加 */
+    font-size: var(--base-font-size);
 }
 
-
 .button:hover {
-    -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
-    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-decoration: none;
     color: white;
@@ -292,21 +279,18 @@ a:hover {
 
 .image-placeholder img {
     max-width: 100%;
-    width: auto;
+    height: auto;
     border-radius: var(--border-radius);
-    -webkit-box-shadow: var(--shadow);
     box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
 }
 
-
 .image-placeholder img:hover {
-    -webkit-transform: scale(1.02);
     transform: scale(1.02);
 }
 
 /* フッター */
 footer {
-    background: -webkit-linear-gradient(to right, var(--primary-color), #34495e);
     background: linear-gradient(to right, var(--primary-color), #34495e);
     color: white;
     text-align: center;
@@ -315,17 +299,6 @@ footer {
 }
 
 /* アニメーション */
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
-        -webkit-transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        -webkit-transform: translateY(0);
-    }
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -342,30 +315,28 @@ p {
     margin: 1.5rem 0;
     line-height: 1.8;
     color: #444;
-    font-size: var(--base-font-size);  /* 本文のサイズを増加 */
+    font-size: var(--base-font-size);
 }
 
 strong {
     color: var(--heading-color);
     font-weight: 600;
 }
-/* 説明テキストのサイズを増加 */
+
 .description {
     font-size: var(--base-font-size);
     margin: 1.5rem 0;
     line-height: 1.8;
 }
 
-/* 重要な情報のテキストサイズを増加 */
 .important-note {
     background-color: #fff3cd;
     border-left: 4px solid #ffc107;
     padding: 1.5rem;
     margin: 1.5rem 0;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    font-size: var(--base-font-size);  /* 重要な情報のサイズを増加 */
+    font-size: var(--base-font-size);
 }
-
 
 /* スクロールバー */
 ::-webkit-scrollbar {
@@ -389,19 +360,59 @@ strong {
 /* レスポンシブデザイン */
 @media (max-width: 1700px) {
     :root {
-        --content-width: 90%;  /* より小さい画面では90%幅に */
+        --content-width: 90%;
     }
 }
 
 @media (max-width: 1200px) {
+    :root {
+        --base-font-size: 18px;
+    }
+    
     .content {
         padding: 2rem;
+    }
+
+    .features {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
     :root {
-        --base-font-size: 18px;
+        --base-font-size: 16px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-content {
+        padding: 0 1rem;
+    }
+
+    nav ul {
+        display: none;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: var(--primary-color);
+        flex-direction: column;
+        padding: 1rem 0;
+        text-align: center;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav li {
+        margin: 0.5rem 0;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
     }
 
     .content {
@@ -410,9 +421,24 @@ strong {
 
     main {
         padding: 0 1rem;
+        margin: 2rem auto;
     }
 
     .step-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --base-font-size: 14px;
+    }
+
+    nav h1 {
+        font-size: 1.5rem;
+    }
+
+    .feature-card {
         padding: 1.5rem;
     }
 }
@@ -433,6 +459,27 @@ strong {
 /* 印刷用スタイル */
 @media print {
     :root {
-        --base-font-size: 12pt;  /* 印刷時のフォントサイズ */
+        --base-font-size: 12pt;
+    }
+
+    nav {
+        position: static;
+    }
+
+    .menu-toggle,
+    .copy-button {
+        display: none;
+    }
+
+    .content {
+        box-shadow: none;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    .feature-card {
+        break-inside: avoid;
     }
 }

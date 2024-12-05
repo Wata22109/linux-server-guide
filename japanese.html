@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>デュアルブート設定 - Linux サーバー構築ガイド</title>
+    <title>日本語入力 - Linux サーバー構築ガイド</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
@@ -12,8 +12,13 @@
 <body>
     <nav>
         <div class="nav-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h1>Linux サーバー構築ガイド</h1>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="preparation.html">準備</a></li>
                 <li><a href="dualboot.html">デュアルブート</a></li>
@@ -55,6 +60,7 @@ sudo apt install -y fcitx-mozc</code></pre>
                 <p>Mozcを有効するには、いったんログアウトして再度ログインする必要があります。
                     再起動が完了したら日本語の入力ができるかどうか確認します。</p>
             </div>
+
             <div class="step-card">
                 <h3>入力、変換操作のカスタマイズ</h3>
                 <p>入力や変換の操作のカスタマイズは、「Mozc プロパティ」ダイアログから行うことができます。</p>
@@ -69,6 +75,23 @@ sudo apt install -y fcitx-mozc</code></pre>
         <p>&copy; 2024 Linux サーバー構築ガイド</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script>
+        // ハンバーガーメニューの制御
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // コードブロックのコピー機能
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const code = button.previousElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                button.textContent = 'コピーしました！';
+                setTimeout(() => {
+                    button.textContent = 'コピー';
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>

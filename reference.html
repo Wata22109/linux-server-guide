@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>準備 - Linux サーバー構築ガイド</title>
+    <title>参考資料 - Linux サーバー構築ガイド</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
@@ -12,8 +12,13 @@
 <body>
     <nav>
         <div class="nav-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h1>Linux サーバー構築ガイド</h1>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="preparation.html">準備</a></li>
                 <li><a href="dualboot.html">デュアルブート</a></li>
@@ -32,7 +37,6 @@
         <div class="content">
             <h2>参考資料</h2>
             <div class="step-card">
-                <h3></h3>
                 <p>●<a href="https://distronanakey.livedoor.blog/archives/12782415.html">ナナッキーのLinux紹介〜脱Windows〜</a> https://distronanakey.livedoor.blog/archives/12782415.html <br>「WindowsとUbuntuのデュアルブート方法、
                     OSの起動優先順位、待ち時間の設定方法、領域の変更方法等全部まとめて説明します～
                     Linuxを使ってみたい方は必見です～」</p>
@@ -49,6 +53,7 @@
                 <p>●<a href="https://matsuand.github.io/docs.docker.jp.onthefly/engine/reference/commandline/container_ls/">Docker Docs</a> https://matsuand.github.io/docs.docker.jp.onthefly/engine/reference/commandline/container_ls/<br> 
                     「docker container ls」</p>
             </div>
+        </div>
     </main>
 
     <footer>
@@ -56,7 +61,12 @@
     </footer>
 
     <script>
-        // コピーボタンの機能
+        // ハンバーガーメニューの制御
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // コードブロックのコピー機能（このページには不要かもしれませんが、一貫性のために含めています）
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', () => {
                 const code = button.previousElementSibling.textContent;

@@ -12,8 +12,13 @@
 <body>
     <nav>
         <div class="nav-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h1>Linux サーバー構築ガイド</h1>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="preparation.html">準備</a></li>
                 <li><a href="dualboot.html">デュアルブート</a></li>
@@ -69,7 +74,12 @@
     </footer>
 
     <script>
-        // コピーボタンの機能
+        // ハンバーガーメニューの制御
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // コードブロックのコピー機能（このページには不要かもしれませんが、一貫性のために含めています）
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', () => {
                 const code = button.previousElementSibling.textContent;

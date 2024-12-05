@@ -12,8 +12,13 @@
 <body>
     <nav>
         <div class="nav-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h1>Linux サーバー構築ガイド</h1>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="preparation.html">準備</a></li>
                 <li><a href="dualboot.html">デュアルブート</a></li>
@@ -63,6 +68,7 @@ sudo systemctl status apache2</code></pre>
                 </div>
                 <div class="image-placeholder">
                     <img src="/linux-server-guide/images/image4.png" alt="Apache状態確認画面" />
+                    <img src="../images/image4.png" alt="Apache状態確認画面" />
                 </div>
                 <p>起動できていれば、図のようにactive(running)と表示されます。</p>
                 <p>次に、ブラウザから、「http://<サーバのIPアドレス>」にアクセスし、図のようなApacheのウェルカムページが
@@ -143,7 +149,6 @@ sudo a2dissite 000-default.conf # 仮想ホストの無効化</code></pre>
                 </div>
                 <p>a2dissite は "Apache2 disable site" の略です。
                 </p>
-
             </div>
         </div>
     </main>
@@ -152,6 +157,23 @@ sudo a2dissite 000-default.conf # 仮想ホストの無効化</code></pre>
         <p>&copy; 2024 Linux サーバー構築ガイド</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script>
+        // ハンバーガーメニューの制御
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // コードブロックのコピー機能
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const code = button.previousElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                button.textContent = 'コピーしました！';
+                setTimeout(() => {
+                    button.textContent = 'コピー';
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>

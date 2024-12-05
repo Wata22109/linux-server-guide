@@ -12,8 +12,13 @@
 <body>
     <nav>
         <div class="nav-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h1>Linux サーバー構築ガイド</h1>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="index.html">ホーム</a></li>
                 <li><a href="preparation.html">準備</a></li>
                 <li><a href="dualboot.html">デュアルブート</a></li>
@@ -87,11 +92,12 @@ sudo htpasswd -c /etc/apache2/.htpasswd username</code></pre>
                 <p>変更後は設定を再度読み込みする。</p>
                 <div class="code-block">
                     <pre><code class="language-bash">sudo systemctl reload apache2</code></pre>
-                <button class="copy-button">コピー</button>
-            </div>
-            <p>「http://localhost」にアクセスして図のような画面になれば設定は成功である。</p>
-            <div class="image-placeholder">
-                <img src="/linux-server-guide/images/image6.jpg" alt="Basic認証" />
+                    <button class="copy-button">コピー</button>
+                </div>
+                <p>「http://localhost」にアクセスして図のような画面になれば設定は成功である。</p>
+                <div class="image-placeholder">
+                    <img src="/linux-server-guide/images/image6.jpg" alt="Basic認証" />
+                </div>
             </div>
         </div>
     </main>
@@ -100,6 +106,23 @@ sudo htpasswd -c /etc/apache2/.htpasswd username</code></pre>
         <p>&copy; 2024 Linux サーバー構築ガイド</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script>
+        // ハンバーガーメニューの制御
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // コードブロックのコピー機能
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const code = button.previousElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                button.textContent = 'コピーしました！';
+                setTimeout(() => {
+                    button.textContent = 'コピー';
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>
